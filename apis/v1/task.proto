@@ -1,0 +1,23 @@
+syntax = "proto3";
+package apis.v1;
+
+option java_multiple_files=true;
+option go_package = "apis/v1/generated";
+option java_outer_classname = "TaskProto";
+option java_package = "com.apis.v1";
+
+import "google/protobuf/timestamp.proto";
+
+// task
+// (-- api-linter: core::0123::resource-annotation=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+message Task {
+  // name of the task
+  string name = 1;
+  // task creator (change string -> user)
+  string task_creator = 2;
+  // task create time
+  google.protobuf.Timestamp task_create_time = 3;
+  // completed boolean
+  bool completed = 4;
+}

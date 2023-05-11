@@ -1,0 +1,7 @@
+syntax = "proto3";
+package apis.v1;
+
+option java_multiple_files=true;
+option go_package = "apis/v1/generated";
+option java_outer_classname = "UserServiceProto";
+option java_package = "com.apis.v1";

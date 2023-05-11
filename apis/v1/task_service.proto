@@ -1,0 +1,44 @@
+syntax = "proto3";
+package apis.v1;
+
+option java_multiple_files=true;
+option go_package = "apis/v1/generated";
+option java_outer_classname = "TaskServiceProto";
+option java_package = "com.apis.v1";
+
+import "apis/v1/task.proto";
+import "apis/google/api/field_behavior.proto";
+
+// The greeting service definition.
+service TaskService {
+  // Sends a greeting
+  // (-- api-linter: core::0133::response-message-name=disabled
+  //     aip.dev/not-precedent: We need to do this because reasons. --)
+  // (-- api-linter: core::0133::method-signature=disabled
+  //     aip.dev/not-precedent: We need to do this because reasons. --)
+  // (-- api-linter: core::0127::http-annotation=disabled
+  //     aip.dev/not-precedent: We need to do this because reasons. --)
+  // (-- api-linter: core::0133::http-uri-parent=disabled
+  //     aip.dev/not-precedent: We need to do this because reasons. --)
+  // (-- api-linter: core::0133::request-parent-reference=disabled
+  //     aip.dev/not-precedent: We need to do this because reasons. --)
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse) {
+
+  }
+}
+
+//create task request
+// (-- api-linter: core::0133::request-parent-reference=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+message CreateTaskRequest{
+  // this is to make linter happy tbd
+  string parent = 1[(google.api.field_behavior) = REQUIRED];
+  // task
+  Task task = 2[(google.api.field_behavior) = REQUIRED];
+}
+
+// create task response
+message CreateTaskResponse{
+// TBD
+string done = 1;
+}
