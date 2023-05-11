@@ -5,3 +5,15 @@ option java_multiple_files=true;
 option go_package = "apis/v1/generated";
 option java_outer_classname = "UserProto";
 option java_package = "com.apis.v1";
+
+// user
+message User {
+  // username
+  string username = 1;
+  // fullname
+  string fullname = 2;
+  // email
+  string email = 3;
+  // role
+  string role = 4;
+}

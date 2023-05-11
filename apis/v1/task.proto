@@ -1,3 +1,7 @@
+// (-- api-linter: core::0123::resource-annotation=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0132::request-parent-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
 syntax = "proto3";
 package apis.v1;
 
@@ -7,17 +11,69 @@ option java_outer_classname = "TaskProto";
 option java_package = "com.apis.v1";
 
 import "google/protobuf/timestamp.proto";
+import "apis/v1/user.proto";
 
 // task
 // (-- api-linter: core::0123::resource-annotation=disabled
 //     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0123::resource-annotation=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
 message Task {
+  // unique identifier for the task
+  int64 id = 1;
   // name of the task
-  string name = 1;
-  // task creator (change string -> user)
-  string task_creator = 2;
+  string name = 2;
+  // description of the task
+  string description = 3;
+  // user who created the task
+  User task_creator = 4;
+  // user assigned to complete the task
+  User assignee = 5;
   // task create time
-  google.protobuf.Timestamp task_create_time = 3;
-  // completed boolean
-  bool completed = 4;
+  google.protobuf.Timestamp task_create_time = 6;
+  // task deadline time
+  google.protobuf.Timestamp task_deadline_time = 7;
+  // priority level for the task
+  Priority priority = 8;
+  // list of tags or labels that can be used to categorize tasks
+  repeated string tags = 9;
+  // additional notes or comments about the task
+  string notes = 10;
+  // list of file attachments associated with the task
+  repeated Attachment attachments = 11;
+  // list of subtasks or smaller tasks that make up the larger task
+  repeated Task subtasks = 12;
+  // boolean flag indicating whether the task has been completed
+  bool completed = 13;
+  // time at which the task was marked as completed
+  google.protobuf.Timestamp completed_time = 14;
+  // boolean flag indicating whether the task has been archived
+  bool archived = 15;
+}
+
+// attachment
+message Attachment {
+  // name of the attachment
+  string name = 1;
+  // type of the attachment (e.g. image, document, etc.)
+  string type = 2;
+  // URL or path to the attachment file
+  string uri = 3;
+}
+
+// task list
+message TaskList {
+  // array of tasks
+  repeated Task tasks = 1;
+}
+// priority enum
+enum Priority {
+  // linter :)
+  PRIORITY_UNSPECIFIED = 0;
+  // low
+  LOW = 1;
+  // medium
+  MEDIUM = 2;
+  // high
+  HIGH = 3;
 }

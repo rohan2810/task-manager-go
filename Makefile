@@ -6,7 +6,7 @@ api-lint:
 
 buf-lint:
 	@echo "linting proto files"
-	buf lint
+	cd apis; buf lint
 
 generate-go:
-	protoc --go_out=. apis/v1/*.proto
+	protoc --go_out=. apis/v1/*.proto --go-grpc_out=. apis/v1/*.proto

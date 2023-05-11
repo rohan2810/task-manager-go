@@ -1,7 +1,124 @@
+// (-- api-linter: core::0133::request-parent-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0127::http-annotation=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0135::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
+// (-- api-linter: core::0127::http-annotation=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0133::request-parent-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0140::prepositions=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0135::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
+// (-- api-linter: core::0131::request-name-required=disabled
+//     aip.dev/not-precedent: This is named "book" for historical reasons. --)
+// (-- api-linter: core::0135::request-name-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0132::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
+// (-- api-linter: core::0132::request-parent-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0131::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
+// (-- api-linter: core::0133::http-uri-parent=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
 syntax = "proto3";
 package apis.v1;
 
-option java_multiple_files=true;
-option go_package = "apis/v1/generated";
+option java_multiple_files = true;
 option java_outer_classname = "UserServiceProto";
 option java_package = "com.apis.v1";
+option go_package = "apis/v1/generated";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/field_mask.proto";
+import "apis/v1/user.proto";
+import "apis/google/api/client.proto";
+import "apis/google/api/field_behavior.proto";
+
+// user service
+service UserService {
+  // get user
+  rpc GetUser (GetUserRequest) returns (User) {
+    option (google.api.method_signature) = "name";
+  }
+
+  // list users
+  rpc ListUsers (ListUsersRequest) returns (ListUsersResponse) {}
+
+  // create user
+  rpc CreateUser (CreateUserRequest) returns (User) {
+    option (google.api.method_signature) = "parent,user";
+  }
+
+  // update user
+  rpc UpdateUser (UpdateUserRequest) returns (User) {
+     option (google.api.method_signature) = "user,update_mask";
+  }
+
+  // delete user
+  rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
+  }
+}
+
+// list users request
+message ListUsersRequest {
+  // limit number of results returned
+  int32 limit = 1;
+  // number of results to skip
+  int32 offset = 2;
+  // page size
+  int32 page_size = 3;
+  // page token
+  string page_token = 4;
+}
+
+// list users response
+message ListUsersResponse {
+  // list of users matching the search criteria
+  repeated User users = 1;
+  // next_page_token
+  string next_page_token = 2;
+}
+
+// create user request
+message CreateUserRequest {
+  // user to be created
+  User user = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+
+// get user request
+message GetUserRequest {
+  // unique identifier for the user to be read
+  int64 id = 1;
+}
+
+// update user request
+message UpdateUserRequest {
+  // user to be updated
+  User user = 1;
+  // update mask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+// delete user request
+message DeleteUserRequest {
+  // unique identifier for the user to be deleted
+  int64 id = 1;
+}
+
+// delete user request
+message DeleteUserResponse {
+  // unique identifier for the user to be deleted
+  int64 id = 1;
+}
+
+// user id
+message UserID {
+  // id
+  string id = 1;
+}

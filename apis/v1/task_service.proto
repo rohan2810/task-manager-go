@@ -1,3 +1,21 @@
+// (-- api-linter: core::0127::http-annotation=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0133::request-parent-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0140::prepositions=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0135::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
+// (-- api-linter: core::0131::request-name-required=disabled
+//     aip.dev/not-precedent: This is named "book" for historical reasons. --)
+// (-- api-linter: core::0135::request-name-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0132::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
+// (-- api-linter: core::0132::request-parent-required=disabled
+//     aip.dev/not-precedent: We need to do this because reasons. --)
+// (-- api-linter: core::0131::request-unknown-fields=disabled
+//     aip.dev/not-precedent: We really need this field because reasons. --)
 syntax = "proto3";
 package apis.v1;
 
@@ -7,7 +25,11 @@ option java_outer_classname = "TaskServiceProto";
 option java_package = "com.apis.v1";
 
 import "apis/v1/task.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/field_mask.proto";
 import "apis/google/api/field_behavior.proto";
+import "apis/google/api/client.proto";
+import "google/protobuf/empty.proto";
 
 // The greeting service definition.
 service TaskService {
@@ -22,8 +44,27 @@ service TaskService {
   //     aip.dev/not-precedent: We need to do this because reasons. --)
   // (-- api-linter: core::0133::request-parent-reference=disabled
   //     aip.dev/not-precedent: We need to do this because reasons. --)
-  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse) {
+  // creates a new task
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse) {
+    option (google.api.method_signature) = "parent,task,id";
+  }
 
+  // retrieves a task by ID
+  rpc GetTask(GetTaskRequest) returns (Task) {
+    option (google.api.method_signature) = "name";
+  }
+
+  // updates an existing task
+  rpc UpdateTask(UpdateTaskRequest) returns (Task) {
+    option (google.api.method_signature) = "task,update_mask";
+  }
+
+  // retrieves a list of tasks matching the specified criteria
+  rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
+
+  // deletes a task by ID
+  rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty) {
+    option (google.api.method_signature) = "name";
   }
 }
 
@@ -39,6 +80,78 @@ message CreateTaskRequest{
 
 // create task response
 message CreateTaskResponse{
-// TBD
-string done = 1;
+  // indicates whether the task was created successfully
+  string done = 1;
+  // ID of the newly created task
+  int64 task_id = 2;
+}
+
+
+// list task request
+message ListTasksRequest {
+  // filter by assignee user
+  string assignee_username = 1;
+  // filter by creator user
+  string task_creator_username = 2;
+  // filter by completion status
+  bool completed = 3;
+  // filter by archived status
+  bool archived = 4;
+  // limit number of results returned
+  int32 limit = 5;
+  // number of results to skip
+  int32 offset = 6;
+  // sort by field
+  string sort_field = 7;
+  // sort order (asc/desc)
+  bool sort_order_asc = 8;
+  // filter by created date before this time
+  google.protobuf.Timestamp creation_before_time = 9;
+  // filter by created date after this time
+  google.protobuf.Timestamp creation_after_time = 10;
+  // filter by deadline date before this time
+  google.protobuf.Timestamp deadline_before_time = 11;
+  // filter by deadline date after this time
+  google.protobuf.Timestamp deadline_after_time = 12;
+  // filter by tags or labels
+  repeated string tags = 13;
+  // page size
+  int32 page_size = 14;
+  // page token
+  string page_token = 15;
+}
+
+
+// list task response
+message ListTasksResponse {
+  // list of tasks matching the search criteria
+  repeated Task tasks = 1;
+  // total count of tasks matching the search criteria
+  string next_page_token = 2;
+
+}
+
+// delete task request
+message DeleteTaskRequest {
+  // unique identifier for the task to be deleted
+  int64 id = 1;
+}
+// delete task response
+message DeleteTaskResponse {
+  // indicates whether the task was successfully deleted
+  bool success = 1;
+}
+
+// update task request
+message UpdateTaskRequest {
+  // task to be updated
+  Task task = 1;
+  // update mask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+// get task request
+message GetTaskRequest {
+  // unique identifier for the task to be retrieved
+  int64 id = 1;
 }

@@ -8,12 +8,6 @@
           <option name="location" value="jar://$APPLICATION_HOME_DIR$/plugins/protoeditor/lib/protoeditor.jar!/include" />
         </ImportPathEntry>
         <ImportPathEntry>
-          <option name="location" value="file://$PROJECT_DIR$/apis" />
-        </ImportPathEntry>
-        <ImportPathEntry>
-          <option name="location" value="file://$PROJECT_DIR$/apis/v1" />
-        </ImportPathEntry>
-        <ImportPathEntry>
           <option name="location" value="file://$PROJECT_DIR$" />
         </ImportPathEntry>
       </list>

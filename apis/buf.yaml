@@ -6,4 +6,4 @@ lint:
   use:
     - DEFAULT
   ignore:
-    - apis/google/
+    - google
