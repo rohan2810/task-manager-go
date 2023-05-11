@@ -94,7 +94,7 @@ message CreateUserRequest {
 // get user request
 message GetUserRequest {
   // unique identifier for the user to be read
-  int64 id = 1;
+  string username = 1;
 }
 
 // update user request
@@ -108,17 +108,11 @@ message UpdateUserRequest {
 // delete user request
 message DeleteUserRequest {
   // unique identifier for the user to be deleted
-  int64 id = 1;
+  string username = 1;
 }
 
 // delete user request
 message DeleteUserResponse {
   // unique identifier for the user to be deleted
-  int64 id = 1;
-}
-
-// user id
-message UserID {
-  // id
-  string id = 1;
+  string username = 1;
 }

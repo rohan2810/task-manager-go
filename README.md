@@ -19,6 +19,8 @@ Plan to use the following tools:
 - [X] setup GitHub flow (ci)
 - [X] Define apis
 - [X] Generate apis
+- [X] ORM for user
+- [] ORM for tasks
 - [ ] Setup database (uptrace bun)
 - [ ] Decide requirements
 - [ ] ...

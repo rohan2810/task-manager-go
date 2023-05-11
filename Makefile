@@ -10,3 +10,7 @@ buf-lint:
 
 generate-go:
 	protoc --go_out=. apis/v1/*.proto --go-grpc_out=. apis/v1/*.proto
+
+vend:
+	go mod tidy
+	go mod vendor
