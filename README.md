@@ -11,13 +11,14 @@ Plan to use the following tools:
 - Deployment: TBD
 - Pipeline (CI/CD): github flow
 - project layout: https://github.com/golang-standards/project-layout
+- Golang ORM: Uptrace bun
 
 ## Tasks
 
 - [X] Setup project structure
-- [X] setup github flow (ci)
-- [ ] Define apis
-- [ ] Generate apis
-- [ ] Setup database
+- [X] setup GitHub flow (ci)
+- [X] Define apis
+- [X] Generate apis
+- [ ] Setup database (uptrace bun)
 - [ ] Decide requirements
 - [ ] ...
