@@ -9,6 +9,7 @@ Plan to use the following tools:
 - Auth: TBD
 - Frontend: TBD
 - Deployment: TBD
+- project layout: https://github.com/golang-standards/project-layout
 
 ## Tasks
 
