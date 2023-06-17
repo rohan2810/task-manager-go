@@ -6,6 +6,7 @@ import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
+	"github.com/uptrace/bun/extra/bundebug"
 )
 
 type DBClient struct {
@@ -16,7 +17,9 @@ func InitDatabase(server, postgres, opts string) (*DBClient, error) {
 	connString := fmt.Sprintf("%s%s", server, opts)
 	sqlDB := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(connString)))
 	db := bun.NewDB(sqlDB, pgdialect.New())
-
+	db.AddQueryHook(bundebug.NewQueryHook(
+		bundebug.WithVerbose(true), // log everything
+	))
 	//verify connection
 	err := db.Ping()
 	if err != nil {

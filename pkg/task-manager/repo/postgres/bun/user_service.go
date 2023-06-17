@@ -2,13 +2,14 @@ package bun
 
 import (
 	"context"
+	"errors"
 	"github.com/uptrace/bun"
 	"rohan.com/task-manager/pkg/task-manager/repo/models"
 )
 
 func (db *DBClient) CreateUserTable(ctx context.Context) error {
 	_, err := db.DB.NewCreateTable().
-		IfNotExists().Model(&models.User{}).
+		IfNotExists().Model((*models.User)(nil)).
 		Exec(ctx)
 	if err != nil {
 		return err
@@ -18,11 +19,22 @@ func (db *DBClient) CreateUserTable(ctx context.Context) error {
 
 func (db *DBClient) CreateUser(ctx context.Context, u *models.User) (*models.User, error) {
 	err := db.DB.RunInTx(ctx, nil, func(ctx context.Context, tx bun.Tx) error {
-		_, err := db.DB.NewInsert().Model(u).Exec(ctx)
-		if err != nil {
-			return err
+
+		var count int
+		user := &models.User{}
+		count, err := db.DB.NewSelect().
+			Model(user).
+			Where("username = ?", u.Username).Count(ctx)
+
+		if count > 0 {
+			return errors.New("username taken, please try another username")
+		} else {
+			_, err = db.DB.NewInsert().Model(u).Exec(ctx)
+			if err != nil {
+				return err
+			}
+			return nil
 		}
-		return nil
 	})
 	if err != nil {
 		return nil, err
