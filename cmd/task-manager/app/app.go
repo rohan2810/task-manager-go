@@ -2,14 +2,13 @@ package app
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	v1 "rohan.com/task-manager/apis/v1/generated"
 	config "rohan.com/task-manager/internal/config"
 	v1user "rohan.com/task-manager/pkg/task-manager/handlers/v1/user"
@@ -35,13 +34,12 @@ func (a *app) Start() error {
 	a.dbService = a.createDBConnection()
 	fmt.Println("connected to db ....")
 	fmt.Println("creating tables ....")
-	err := a.createDBtables()
-	fmt.Println("created tables ....")
+	err := a.createDBtables(a.ctx)
 	if err != nil {
 		fmt.Println("error creating db tables")
 		return err
 	}
-	flag.Parse()
+	fmt.Println("created tables ....")
 	listener, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", 9091))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -67,8 +65,8 @@ func (a *app) Start() error {
 	return nil
 }
 
-func (a *app) createDBtables() error {
-	err := a.dbService.CreateUserTable(context.Background())
+func (a *app) createDBtables(ctx context.Context) error {
+	err := a.dbService.CreateUserTable(ctx)
 	if err != nil {
 		return err
 	}
@@ -77,7 +75,7 @@ func (a *app) createDBtables() error {
 
 func (a *app) createDBConnection() *bun.DBClient {
 	// read config
-	data, err := ioutil.ReadFile("../../internal/config/config.yaml")
+	data, err := os.ReadFile("internal/config/config.yaml")
 	if err != nil {
 		log.Fatal(err)
 	}
