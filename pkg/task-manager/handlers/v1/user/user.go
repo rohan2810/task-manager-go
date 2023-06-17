@@ -47,3 +47,27 @@ func (s *Service) CreateUser(ctx context.Context, req *v1.CreateUserRequest) (*v
 		Role:     user.Role,
 	}, nil
 }
+
+func (s *Service) ListUsers(ctx context.Context, req *v1.ListUsersRequest) (*v1.ListUsersResponse, error) {
+	var err error
+	// TODO: implement request fields
+
+	users, err := s.DB.ListUser(ctx)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil, err
+	}
+
+	usersA := make([]*v1.User, len(users))
+	for _, user := range users {
+		usersA = append(usersA, &v1.User{
+			Username: user.Username,
+			Fullname: user.Fullname,
+			Email:    user.Email,
+			Role:     user.Role,
+		})
+	}
+	return &v1.ListUsersResponse{
+		Users: usersA,
+	}, nil
+}
