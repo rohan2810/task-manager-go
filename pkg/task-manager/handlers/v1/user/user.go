@@ -71,3 +71,23 @@ func (s *Service) ListUsers(ctx context.Context, req *v1.ListUsersRequest) (*v1.
 		Users: usersA,
 	}, nil
 }
+
+func (s *Service) GetUser(ctx context.Context, req *v1.GetUserRequest) (*v1.User, error) {
+	var err error
+	if req == nil {
+		fmt.Println("empty request")
+	}
+	requestedUsername := req.Username
+
+	user, err := s.DB.GetUser(ctx, requestedUsername)
+	if err != nil {
+		return nil, err
+	}
+
+	return &v1.User{
+		Username: user.Username,
+		Fullname: user.Fullname,
+		Email:    user.Email,
+		Role:     user.Role,
+	}, nil
+}
