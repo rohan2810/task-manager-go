@@ -11,6 +11,7 @@ import (
 	"os"
 	v1 "rohan.com/task-manager/apis/v1/generated"
 	config "rohan.com/task-manager/internal/config"
+	v1task "rohan.com/task-manager/pkg/task-manager/handlers/v1/task"
 	v1user "rohan.com/task-manager/pkg/task-manager/handlers/v1/user"
 	"rohan.com/task-manager/pkg/task-manager/repo/postgres"
 	"rohan.com/task-manager/pkg/task-manager/repo/postgres/bun"
@@ -51,9 +52,11 @@ func (a *app) Start() error {
 	//register user service
 	userService := v1user.NewService(a.dbService, a.ctx)
 	v1.RegisterUserServiceServer(grpcServer, userService)
-	fmt.Println("registered services...")
+	fmt.Println("registered user service...")
 	// register task service
-	//v1.RegisterTaskServiceServer(grpcServer)
+	taskService := v1task.NewService(a.dbService, a.ctx)
+	v1.RegisterTaskServiceServer(grpcServer, taskService)
+	fmt.Println("registered task service...")
 	reflection.Register(grpcServer)
 	a.grpcServer = grpcServer
 	fmt.Println("grpc listening on 9091...")
@@ -67,6 +70,10 @@ func (a *app) Start() error {
 
 func (a *app) createDBtables(ctx context.Context) error {
 	err := a.dbService.CreateUserTable(ctx)
+	if err != nil {
+		return err
+	}
+	err = a.dbService.CreateTaskTable(ctx)
 	if err != nil {
 		return err
 	}

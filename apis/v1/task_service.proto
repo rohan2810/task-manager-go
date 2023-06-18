@@ -81,7 +81,7 @@ message CreateTaskRequest{
 // create task response
 message CreateTaskResponse{
   // indicates whether the task was created successfully
-  string done = 1;
+  bool done = 1;
   // ID of the newly created task
   int64 task_id = 2;
 }
